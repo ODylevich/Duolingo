@@ -15,7 +15,7 @@ class Card:
 cards = []
 
 new_words = {
-    'Hola': 'Привет',
+    'Hola': 'Приветтт',
     'Adios': "Пока",
     'Gracias': 'Спасибо'
 }
