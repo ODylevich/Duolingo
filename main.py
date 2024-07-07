@@ -6,30 +6,20 @@ class Card:
         self.word = word
         self.translation = translation
         self.picked_side = ""
+        self.unpicked_side = ""
 
     def pick_card(self):
-        self.picked_side = random.choice([self.word, self.translation])
-        print(self.picked_side)
+        self.picked_side, self.unpicked_side = random.sample([self.word, self.translation], 2)
+        return self.picked_side
 
-    def check_word(self):
-        user_answer = input("Write the word")
-        if (user_answer == self.word or user_answer == self.translation):
-            print("Well done ")
-        else:
-            print("Not well done")
-
-
-
-
-
-
-
+    def check_user(self, user_answer):
+        return user_answer == self.unpicked_side
 
 
 cards = []
 
 new_words = {
-    'Hola': 'Приветтт',
+    'Hola': 'Привет',
     'Adios': "Пока",
     'Gracias': 'Спасибо',
     'Palabras': 'Слова'
@@ -39,6 +29,8 @@ for key, value in new_words.items():
     cards.append(Card(word=key, translation=value))
 
 
-random_index = random.randint(0,len(cards)-1)
-cards[random_index].pick_card()
-cards[random_index].check_word()
+def get_card():
+    random_index = random.randint(0, len(cards) - 1)
+    return cards[random_index].pick_card(), cards[random_index].unpicked_side
+
+
