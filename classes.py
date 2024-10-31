@@ -8,6 +8,8 @@ class PartOfSpeech(Enum):
     """
     Enumeration of parts of speech to standardize allowed values.
     """
+    NOUN = "noun"
+    VERB = "verb"
     ADVERB = "adverb"
     ADJECTIVE = "adjective"
     PHRASE = "phrase"
@@ -26,6 +28,7 @@ class Noun:
     gender_article: str
     plural_form: str
     translation: str
+    part_of_speech: PartOfSpeech = PartOfSpeech.NOUN
     examples: List[Tuple[str, str]] = field(default_factory=list)
 
     def __post_init__(self):
@@ -37,7 +40,8 @@ class Noun:
         """
         examples_text = "\n".join(f"{s} - {t}" for s, t in self.examples)
         return (
-            f"Singular: {self.gender_article} {self.noun}\n"
+            f"Part of speech: {self.part_of_speech.value}\n"
+            f"Word: {self.gender_article} {self.noun}\n"
             f"Plural: {self.plural_form}\n"
             f"Translation: {self.translation}\n"
             f"Examples:\n{examples_text}"
@@ -74,6 +78,7 @@ class Verb:
     perfekt: str
     translation: str
     present_conjugation: PresentConjugation
+    part_of_speech: PartOfSpeech = PartOfSpeech.VERB
     examples: List[Tuple[str, str]] = field(default_factory=list)
 
     def __str__(self) -> str:
@@ -86,7 +91,9 @@ class Verb:
             f"Er/sie/es {self.present_conjugation.singular_3rd} | Sie {self.present_conjugation.plural_3rd}\n"
         )
 
-        return (f"Verb: {self.main_verb}\n"
+        return (
+                f"Part of speech: {self.part_of_speech.value}\n"
+                f"Word: {self.main_verb}\n"
                 f"Perfekt: {self.perfekt}\n"
                 f"Translation: {self.translation}\n"
                 f"{conjugation_str}"
@@ -109,23 +116,6 @@ class Verb:
         """
         for sentence, translation in self.examples:
             print(f"{sentence} - {translation}")
-
-
-conjugation = PresentConjugation(
-    singular_1st="erlebe",
-    singular_2nd="erlebst",
-    singular_3rd="erlebt",
-    plural_1st="erleben",
-    plural_2nd="erlebt",
-    plural_3rd="erleben"
-)
-
-verb = Verb(
-    main_verb="Erleben",
-    perfekt="Erlebt",
-    translation="To experience",
-    present_conjugation=conjugation
-)
 
 
 @dataclass
@@ -161,7 +151,9 @@ class OtherWord:
         Returns a formatted string representation of the OtherWord instance.
         """
         example_str = "\n".join([f"{sent} ({trans})" for sent, trans in self.examples])
-        return (f"Word: {self.word} ({self.part_of_speech.value})\n"
+        return (
+                f"Part of speech: {self.part_of_speech.value}\n"
+                f"Word: {self.word}\n"
                 f"Translation: {self.translation}\n"
                 f"Examples:\n{example_str}")
 
